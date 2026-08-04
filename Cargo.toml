@@ -1,46 +1,42 @@
-[workspace]
-resolver = "3"
-members = [
-    "albert-burn",
-    "bert-burn",
-    "llama-burn",
-    "minilm-burn",
-    "mobilenetv2-burn",
-    "resnet-burn",
-    "resnet-burn/examples/inference",
-    "resnet-burn/examples/finetune",
-    "squeezenet-burn",
-    "yolox-burn",
-]
-
-[workspace.package]
+[package]
+name = "maolan-llama"
+version = "0.0.1"
+edition = "2024"
 license = "MIT OR Apache-2.0"
+description = "Llama 3 large language model with Burn, vendored from tracel-ai/models for maolan-generate"
+repository = "https://github.com/maolan/llama-burn"
+homepage = "https://maolan.rs"
+readme = "README.md"
+authors = ["Maolan Team"]
+keywords = ["llama", "burn", "inference", "ml"]
+categories = ["science", "algorithms"]
+publish = true
 
-[workspace.dependencies]
-# burn ecosystem
-burn        = { version = "0.21.0-pre.4", default-features = false }
-burn-store  = { version = "0.21.0-pre.4", default-features = false }
-burn-flex   = { version = "0.21.0-pre.4" }
-burn-onnx   = { version = "0.21.0-pre.4" }
+[features]
+default = ["pretrained"]
+pretrained = ["burn/network", "dep:dirs"]
 
-# shared third-party
-serde       = { version = "1", default-features = false }
-serde_json  = "1"
-tokio       = "1"
-libm        = "0.2"
-itertools   = { version = "0.14", default-features = false }
-dirs        = "6"
-hf-hub      = "0.5"
-image       = { version = "0.25", default-features = false }
-clap        = { version = "4", features = ["derive"] }
-tokenizers  = { version = "0.22", default-features = false }
-rand        = { version = "0.9", default-features = false }
-tar         = "0.4"
-csv         = "1"
-flate2      = "1"
-base64      = "0.22"
-rustc-hash  = "1.1"
-tiktoken-rs = "0.11"
-derive-new  = "0.7"
-criterion   = "0.8"
-divan       = "0.1"
+llama3 = ["dep:tiktoken-rs", "dep:rustc-hash", "dep:base64"]
+tiny = ["dep:tokenizers"]
+
+# Import pytorch/safetensors weights
+import = ["burn-store/pytorch", "burn-store/safetensors"]
+
+[dependencies]
+burn = { version = "0.21.0", default-features = false, features = ["std"] }
+burn-store = { version = "0.21.0", default-features = false, features = ["std", "burnpack"] }
+itertools = { version = "0.14", default-features = false, features = ["use_alloc"] }
+dirs = { version = "6", optional = true }
+serde = { version = "1.0", default-features = false, features = ["derive", "alloc"] }
+rand = { version = "0.9", default-features = false, features = ["alloc", "std_rng"] }
+
+# Tiktoken tokenizer (llama 3)
+tiktoken-rs = { version = "0.11", optional = true }
+base64 = { version = "0.22", optional = true }
+rustc-hash = { version = "1.1", optional = true }
+
+# SentencePiece tokenizer (tiny llama / llama 2)
+tokenizers = { version = "0.22", default-features = false, features = ["onig"], optional = true }
+
+[dev-dependencies]
+burn-ndarray = { version = "0.21.0", default-features = false, features = ["std"] }

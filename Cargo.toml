@@ -1,6 +1,6 @@
 [package]
 name = "maolan-llama"
-version = "0.0.2"
+version = "0.0.3"
 edition = "2024"
 license = "MIT OR Apache-2.0"
 description = "Llama 3 large language model with Burn, vendored from tracel-ai/models for maolan-generate"
@@ -23,8 +23,10 @@ tiny = ["dep:tokenizers"]
 import = ["burn-store/pytorch", "burn-store/safetensors"]
 
 [dependencies]
-burn = { version = "0.21.0", default-features = false, features = ["std"] }
-burn-store = { version = "0.21.0", default-features = false, features = ["std", "burnpack"] }
+# Runtime devices support GPU inference via `wgpu` and CPU inference/tests
+# via `Device::flex()`.
+burn = { version = "0.22.0", default-features = false, features = ["std", "wgpu", "flex"] }
+burn-store = { version = "0.22.0", default-features = false, features = ["std"] }
 itertools = { version = "0.15", default-features = false, features = ["use_alloc"] }
 dirs = { version = "6", optional = true }
 serde = { version = "1.0", default-features = false, features = ["derive", "alloc"] }
@@ -37,6 +39,3 @@ rustc-hash = { version = "2.1", optional = true }
 
 # SentencePiece tokenizer (tiny llama / llama 2)
 tokenizers = { version = "0.23", default-features = false, features = ["onig"], optional = true }
-
-[dev-dependencies]
-burn-ndarray = { version = "0.21.0", default-features = false, features = ["std"] }

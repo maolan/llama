@@ -10,9 +10,3 @@ pub mod pretrained;
 pub mod sampling;
 pub mod tokenizer;
 mod transformer;
-
-#[cfg(test)]
-mod tests {
-    pub type TestBackend = burn_ndarray::NdArray;
-    pub type TestTensor<const D: usize> = burn::tensor::Tensor<TestBackend, D>;
-}

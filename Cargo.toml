@@ -1,6 +1,6 @@
 [package]
 name = "maolan-llama"
-version = "0.0.3"
+version = "0.0.4"
 edition = "2024"
 license = "MIT OR Apache-2.0"
 description = "Llama 3 large language model with Burn, vendored from tracel-ai/models for maolan-generate"
@@ -25,10 +25,10 @@ import = ["burn-store/pytorch", "burn-store/safetensors"]
 [dependencies]
 # Runtime devices support GPU inference via `wgpu` and CPU inference/tests
 # via `Device::flex()`.
-burn = { version = "0.22.0", default-features = false, features = ["std", "wgpu", "flex"] }
-burn-store = { version = "0.22.0", default-features = false, features = ["std"] }
+burn = { version = "0.22.1", default-features = false, features = ["std", "wgpu", "flex"] }
+burn-store = { version = "0.22.1", default-features = false, features = ["std"] }
 itertools = { version = "0.15", default-features = false, features = ["use_alloc"] }
-dirs = { version = "6", optional = true }
+dirs = { version = "7", optional = true }
 serde = { version = "1.0", default-features = false, features = ["derive", "alloc"] }
 rand = { version = "0.10", default-features = false, features = ["alloc", "std_rng"] }
 
